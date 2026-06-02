@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { useUpdater } from "@/modules/updater";
 import { GithubIcon, Globe02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { getName, getVersion } from "@tauri-apps/api/app";
@@ -8,7 +7,7 @@ import { arch, platform } from "@tauri-apps/plugin-os";
 import { useEffect, useState } from "react";
 import { SectionHeader } from "../components/SectionHeader";
 
-const REPO_URL = "https://github.com/crynta/terax-ai";
+const REPO_URL = "https://github.com/yathartha19/torch-terminal";
 const WEBSITE = "https://terax.app";
 
 const PLATFORM_LABEL: Record<string, string> = {
@@ -24,32 +23,6 @@ export function AboutSection() {
   const [version, setVersion] = useState("");
   const [name, setName] = useState("Terax");
   const [build, setBuild] = useState("");
-  const { status, check, install } = useUpdater({ autoCheck: false });
-  const checking = status.kind === "checking";
-  const downloading = status.kind === "downloading";
-  const available = status.kind === "available";
-  const manualAvailable = status.kind === "manual-available";
-  const ready = status.kind === "ready";
-  const checkLabel =
-    status.kind === "uptodate"
-      ? "You're up to date"
-      : status.kind === "error"
-        ? "Check failed — retry"
-        : checking
-          ? "Checking…"
-          : downloading
-            ? "Downloading…"
-            : ready
-              ? "Restart to install"
-              : available
-                ? `Install v${status.update.version}`
-                : manualAvailable
-                  ? `Update to v${status.info.version}`
-                  : "Check for updates";
-  const onUpdateClick = () => {
-    if (available) void install();
-    else void check({ manual: true });
-  };
 
   useEffect(() => {
     void getVersion().then(setVersion);
@@ -75,7 +48,7 @@ export function AboutSection() {
             {name}
           </span>
           <span className="text-[11px] text-muted-foreground">
-            Open-source AI-native terminal emulator
+            Open-source terminal emulator
           </span>
           <span className="mt-1 font-mono text-[11px] text-muted-foreground">
             v{version || "—"}
@@ -90,7 +63,7 @@ export function AboutSection() {
         </dd>
 
         <dt className="text-muted-foreground">Bundle ID</dt>
-        <dd className="font-mono text-[11.5px]">app.crynta.terax</dd>
+        <dd className="font-mono text-[11.5px]">app.tensei.torch</dd>
 
         <dt className="text-muted-foreground">License</dt>
         <dd>Apache 2.0</dd>
@@ -103,7 +76,7 @@ export function AboutSection() {
             className="inline-flex items-center gap-1.5 rounded-md text-[12px] underline-offset-2 hover:text-foreground hover:underline"
           >
             <HugeiconsIcon icon={GithubIcon} size={12} strokeWidth={1.75} />
-            crynta/terax-ai
+            torch-terminal
           </button>
         </dd>
         <dt className="text-muted-foreground">Website</dt>
@@ -122,13 +95,6 @@ export function AboutSection() {
       <div className="flex flex-col gap-1.5">
         <div className="flex gap-2">
           <Button
-            size="sm"
-            onClick={onUpdateClick}
-            disabled={checking || downloading || ready}
-          >
-            {checkLabel}
-          </Button>
-          <Button
             variant="outline"
             size="sm"
             onClick={() => void openUrl(REPO_URL)}
@@ -137,28 +103,7 @@ export function AboutSection() {
             <HugeiconsIcon icon={GithubIcon} size={12} strokeWidth={1.75} />
             View on GitHub
           </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => void openUrl(`${REPO_URL}/issues/new`)}
-          >
-            Report an issue
-          </Button>
         </div>
-        {status.kind === "error" && (
-          <p className="font-mono text-[10.5px] break-all text-destructive/80">
-            {status.message}
-          </p>
-        )}
-        {downloading && status.contentLength ? (
-          <p className="text-[11px] text-muted-foreground">
-            {Math.min(
-              100,
-              Math.round((status.downloaded / status.contentLength) * 100),
-            )}
-            %
-          </p>
-        ) : null}
       </div>
     </div>
   );

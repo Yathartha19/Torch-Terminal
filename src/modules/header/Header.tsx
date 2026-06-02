@@ -213,10 +213,6 @@ export function Header({
 
       {IS_MAC && (
         <>
-          <NotificationBell
-            onActivate={onActivateAgent}
-            onActivateLocal={onActivateLocalAgent}
-          />
           {settingsButton}
         </>
       )}

@@ -15,7 +15,6 @@ import {
   Search01Icon,
   Settings01Icon,
   SidebarLeftIcon,
-  SparklesIcon,
   TerminalIcon,
 } from "@hugeicons/core-free-icons";
 
@@ -253,24 +252,6 @@ export function createCommandPaletteActions(
       disabledReason: ctx.searchTarget ? undefined : "No searchable view",
       run: ctx.focusSearch,
       deferRun: true,
-    },
-    {
-      id: "ai.toggle",
-      label: "Toggle AI agent",
-      group: "AI",
-      keywords: ["assistant", "chat", "agent"],
-      icon: SparklesIcon,
-      shortcutId: "ai.toggle",
-      run: ctx.toggleAi,
-    },
-    {
-      id: "ai.askSelection",
-      label: "Ask AI about selection",
-      group: "AI",
-      keywords: ["selection", "explain", "assistant", "chat"],
-      icon: SparklesIcon,
-      shortcutId: "ai.askSelection",
-      run: ctx.askAiSelection,
-    },
+    }
   ];
 }

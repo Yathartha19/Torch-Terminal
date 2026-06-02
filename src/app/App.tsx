@@ -108,7 +108,6 @@ import {
   themeFilePath,
   writeThemeFile,
 } from "@/modules/theme/themeFiles";
-import { UpdaterDialog } from "@/modules/updater";
 import {
   currentWorkspaceEnv,
   getWslHome,
@@ -413,7 +412,6 @@ export default function App() {
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const miniOpen = useChatStore((s) => s.mini.open);
   const activeSessionId = useChatStore((s) => s.activeSessionId);
-  const openMini = useChatStore((s) => s.openMini);
   const focusInput = useChatStore((s) => s.focusInput);
   const openPanel = useChatStore((s) => s.openPanel);
   const panelOpen = useChatStore((s) => s.panelOpen);
@@ -1127,16 +1125,6 @@ export default function App() {
       if (id === "editor.undo" || id === "editor.redo") {
         return activeTab?.kind !== "editor";
       }
-      if (id === "ai.askSelection") {
-        const target =
-          (e.target as HTMLElement | null) ?? document.activeElement;
-        const inTerminal = !!(target as HTMLElement | null)?.closest?.(
-          ".xterm",
-        );
-        if (!inTerminal) return false;
-        const sel = captureActiveSelection();
-        return !sel || !sel.trim();
-      }
       if (id === "terminal.clear") {
         // Only intercept ⌘K while a terminal is focused; elsewhere let the key
         // fall through (we never preventDefault when disabled).
@@ -1651,11 +1639,6 @@ export default function App() {
             home={home}
             onCd={sendCd}
             onWorkspaceChange={switchWorkspace}
-            onOpenMini={openMini}
-            hasComposer={hasComposer}
-            privateActive={
-              activeTab?.kind === "terminal" && activeTab.private === true
-            }
             />
           )}
 
@@ -1708,8 +1691,6 @@ export default function App() {
             rootPath={explorerRoot ?? home}
             onCreated={(path) => openFileTab(path)}
           />
-
-          <UpdaterDialog />
 
           <AlertDialog
             open={pendingCloseTab !== null}

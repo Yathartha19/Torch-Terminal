@@ -197,7 +197,7 @@ export function CommandPalette({
           placeholder="Run a command or open a file..."
           autoFocus
         />
-        <ScrollArea className="max-h-[420px]">
+        <ScrollArea className="max-h-105">
           <CommandList className="max-h-none overflow-visible pr-3">
             {COMMAND_PALETTE_ACTION_GROUPS.map((group) => {
               const groupActions = visibleActions.filter(

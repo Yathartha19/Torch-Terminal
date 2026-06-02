@@ -198,7 +198,7 @@ function ShortcutRow({
           <>
             <div
               onClick={onStartRecording}
-              className="flex min-w-[100px] cursor-pointer items-center justify-end gap-1"
+              className="flex min-w-25 cursor-pointer items-center justify-end gap-1"
             >
               {hasBindings ? (
                 <KbdGroup>
