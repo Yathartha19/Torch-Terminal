@@ -141,10 +141,7 @@ export const SHORTCUTS: Shortcut[] = [
     id: "terminal.clear",
     label: "Clear terminal",
     group: "Terminal",
-    // macOS Terminal's ⌘K (clear scrollback, keep the prompt). Default only on
-    // macOS — on other platforms Ctrl+K is readline's kill-line, so we leave it
-    // unbound and let users assign their own in settings.
-    defaultBindings: IS_MAC ? [{ meta: true, key: "k" }] : [],
+    defaultBindings: IS_MAC ? [{ meta: true, key: "o" }] : [],
   },
   {
     id: "tab.next",
@@ -180,12 +177,8 @@ export const SHORTCUTS: Shortcut[] = [
     id: "sidebar.toggle",
     label: "Toggle file explorer",
     group: "View",
-    // Plain Mod+B toggles the sidebar everywhere EXCEPT a focused terminal,
-    // where it's handed to the shell / Claude Code (its "run in background"
-    // key). Mod+Shift+B always toggles, including from inside a terminal.
-    defaultBindings: [
+    defaultBindings: [ 
       { [MOD_PROP]: true, key: "b" },
-      { [MOD_PROP]: true, shift: true, key: "b" },
     ],
   },
   {
