@@ -82,7 +82,7 @@ export const SHORTCUTS: Shortcut[] = [
     label: "New tab",
     group: "Tabs",
     defaultBindings: [{ [MOD_PROP]: true, key: "t" }],
-  },
+  }, 
   {
     id: "tab.newPrivate",
     label: "New private terminal",

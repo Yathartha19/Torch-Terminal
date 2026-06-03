@@ -1,10 +1,11 @@
 pub mod modules;
 
+use cocoa::base::nil;
 use modules::{agent, fs, git, net, pty, secrets, shell, workspace};
 use std::sync::Mutex;
 use tauri::{Emitter, Manager, State, WebviewUrl, WebviewWindowBuilder};
 #[cfg(target_os = "macos")]
-use tauri::{PhysicalPosition, WindowEvent};
+use tauri::{PhysicalPosition};
 use tauri_plugin_window_state::StateFlags;
 
 /// Drained on first read so HMR / re-mounts can't replay the launch dir.
@@ -136,23 +137,49 @@ pub fn run() {
                 .build(),
         )
         .plugin(tauri_plugin_opener::init())
-        .setup(|_app| {
-            // macOS skips parent() for the settings window, so tie its lifecycle
-            // to the main window here instead. Other platforms keep parent().
+        .setup(|app| {
+            let win = app.get_webview_window("main").unwrap();
+        
             #[cfg(target_os = "macos")]
-            if let Some(main) = _app.get_webview_window("main") {
-                let handle = _app.handle().clone();
-                main.on_window_event(move |event| {
-                    if matches!(
-                        event,
-                        WindowEvent::CloseRequested { .. } | WindowEvent::Destroyed
-                    ) {
+            {
+                use cocoa::appkit::{NSWindow, NSWindowStyleMask};
+                let ns_win = win.ns_window().unwrap() as cocoa::base::id;
+                unsafe {
+                  let mut style = ns_win.styleMask();
+                  style.remove(NSWindowStyleMask::NSTitledWindowMask);
+                  style.remove(NSWindowStyleMask::NSClosableWindowMask);
+                  style.remove(NSWindowStyleMask::NSMiniaturizableWindowMask);
+                  style.insert(NSWindowStyleMask::NSResizableWindowMask);
+                  style.insert(NSWindowStyleMask::NSFullSizeContentViewWindowMask);
+                  ns_win.setStyleMask_(style);
+              
+                  // restore rounded corners and shadow
+                  use objc::{msg_send, sel, sel_impl};
+                  let _: () = msg_send![ns_win, setHasShadow: true];
+                  let _: () = msg_send![ns_win, invalidateShadow];
+                  
+                  // set corner radius
+                  use cocoa::base::id;
+                  let layer: id = msg_send![ns_win, contentView];
+                  let layer: id = msg_send![layer, layer];
+                  if !layer.is_null() {
+                      let _: () = msg_send![layer, setCornerRadius: 10.0f64];
+                      let _: () = msg_send![layer, setMasksToBounds: true];
+                  }
+                  let _: () = msg_send![ns_win, setOpaque: false];
+                  let _: () = msg_send![ns_win, setBackgroundColor: cocoa::appkit::NSColor::clearColor(nil)];
+                }
+            
+                let handle = app.handle().clone();
+                win.on_window_event(move |event| {
+                    if matches!(event, tauri::WindowEvent::CloseRequested { .. } | tauri::WindowEvent::Destroyed) {
                         if let Some(settings) = handle.get_webview_window("settings") {
                             let _ = settings.close();
                         }
                     }
                 });
             }
+        
             Ok(())
         })
         .manage(pty::PtyState::default())

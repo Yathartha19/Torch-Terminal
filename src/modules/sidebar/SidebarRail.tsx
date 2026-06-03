@@ -40,7 +40,7 @@ export function SidebarRail({ activeView, onSelectView, changedCount }: Props) {
         return (
           <button
             key={item.id}
-            type="button"
+            type="button" 
             aria-label={item.label}
             aria-pressed={isActive}
             onClick={() => onSelectView(item.id)}

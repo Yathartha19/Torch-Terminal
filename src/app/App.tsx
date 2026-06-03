@@ -1427,7 +1427,8 @@ export default function App() {
           onSearchReady={handleSearchReady}
           onCwd={handleTerminalCwd}
           onExit={handleLeafExit}
-          onFocusLeaf={handleFocusLeaf}
+          onFocusLeaf={handleFocusLeaf} 
+          zenMode={zenMode}
         />
       </div>
       <div

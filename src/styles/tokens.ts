@@ -66,6 +66,10 @@ function resolve(el: HTMLDivElement, varName: string): string {
   return getComputedStyle(el).color;
 }
 
+export function setBorderColor(color: string) {
+  document.documentElement.style.setProperty('--border-color', color);
+}
+
 export function readTerminalTokens(): TerminalTokens {
   const el = getProbe();
   const out = {} as TerminalTokens;

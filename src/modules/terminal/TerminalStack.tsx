@@ -14,6 +14,7 @@ type Props = {
   onCwd: (leafId: number, cwd: string) => void;
   onExit: (leafId: number, code: number) => void;
   onFocusLeaf: (tabId: number, leafId: number) => void;
+  zenMode: boolean;
 };
 
 type Bundle = {
@@ -31,6 +32,7 @@ export function TerminalStack({
   onCwd,
   onExit,
   onFocusLeaf,
+  zenMode,
 }: Props) {
   const terminals = useMemo(
     () => tabs.filter((t) => t.kind === "terminal"),
@@ -97,6 +99,7 @@ export function TerminalStack({
               activeLeafId={t.activeLeafId}
               onFocusLeaf={(leafId) => onFocusLeaf(t.id, leafId)}
               getBundle={getBundle}
+              zenMode={zenMode}
             />
           </div>
         );

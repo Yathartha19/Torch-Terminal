@@ -22,6 +22,7 @@ type Props = {
   activeLeafId: number;
   onFocusLeaf: (leafId: number) => void;
   getBundle: (leafId: number) => LeafBundle;
+  zenMode: boolean;
 };
 
 export function PaneTreeView({
@@ -30,6 +31,7 @@ export function PaneTreeView({
   activeLeafId,
   onFocusLeaf,
   getBundle,
+  zenMode,
 }: Props) {
   if (node.kind === "leaf") {
     const focused = node.id === activeLeafId;
@@ -56,6 +58,7 @@ export function PaneTreeView({
           onSearchReady={(_id, addon) => b.onSearch(addon)}
           onCwd={(_id, cwd) => b.onCwd(cwd)}
           onExit={(_id, code) => b.onExit(code)}
+          zenMode={zenMode}
         />
         <DropOverlay leafId={node.id} />
       </div>
