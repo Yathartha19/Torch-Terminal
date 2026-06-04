@@ -801,6 +801,10 @@ export function useTabs(initial?: Partial<TerminalTab>) {
     for (const lid of toDispose) disposeSession(lid);
   }, []);
 
+  const reorderTabs = useCallback((next: Tab[]) => {
+    setTabs(next);
+  }, []);
+
   return {
     tabs,
     activeId,
@@ -828,5 +832,6 @@ export function useTabs(initial?: Partial<TerminalTab>) {
     closeActivePane,
     closePaneByLeaf,
     resetWorkspace,
+    reorderTabs,
   };
 }

@@ -54,6 +54,7 @@ type Props = {
   onOpenSettings: () => void;
   searchTarget: SearchTarget;
   searchRef: RefObject<SearchInlineHandle | null>;
+  onReorder: (tabs: Tab[]) => void;
 };
 
 const COMPACT_WIDTH = 720;
@@ -78,6 +79,7 @@ export function Header({
   onOpenSettings,
   searchTarget,
   searchRef,
+  onReorder,
 }: Props) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [compact, setCompact] = useState(false);
@@ -205,6 +207,7 @@ export function Header({
           onPin={onPin}
           onRename={onRename}
           compact={compact}
+          onReorder={onReorder}
         />
         <div data-tauri-drag-region className="h-full min-w-2 flex-1" />
       </div>
