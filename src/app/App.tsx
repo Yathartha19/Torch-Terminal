@@ -28,7 +28,6 @@ import {
   getAllCustomEndpointKeys,
   hasAnyKey,
   LocalAgentNotificationsBridge,
-  SelectionAskAi,
   useChatStore,
 } from "@/modules/ai";
 import { AiComposerProvider } from "@/modules/ai/lib/composer";
@@ -778,75 +777,6 @@ export default function App() {
     [hasComposer, openPanel, focusInput],
   );
 
-  const askFromSelection = useCallback(() => {
-    if (!hasComposer) {
-      void openSettingsWindow("models");
-      return;
-    }
-    const selection = captureActiveSelection();
-    if (!selection || !selection.trim()) {
-      focusInput(null);
-      return;
-    }
-    const source: "terminal" | "editor" =
-      activeTab?.kind === "editor" ? "editor" : "terminal";
-    attachSelection(selection, source);
-  }, [
-    hasComposer,
-    captureActiveSelection,
-    focusInput,
-    attachSelection,
-    activeTab,
-  ]);
-
-  const [askPopup, setAskPopup] = useState<{ x: number; y: number } | null>(
-    null,
-  );
-
-  useEffect(() => {
-    const isInsideAi = (t: EventTarget | null) => {
-      const el = t as HTMLElement | null;
-      if (!el) return false;
-      return !!(
-        el.closest("[data-selection-ask-ai]") ||
-        el.closest("[data-ai-input-bar]") ||
-        el.closest("[data-ai-mini-window]")
-      );
-    };
-
-    const onDown = (e: MouseEvent) => {
-      if (isInsideAi(e.target)) return;
-      setAskPopup(null);
-    };
-    const onUp = (e: MouseEvent) => {
-      if (isInsideAi(e.target)) return;
-      const el = e.target as HTMLElement | null;
-      const inContentArea = el?.closest?.(".xterm, .cm-editor");
-      if (!inContentArea) return;
-      // Defer one tick so xterm/CodeMirror finalize the selection.
-      setTimeout(() => {
-        const text = captureActiveSelection();
-        if (text && text.trim().length > 0) {
-          setAskPopup({ x: e.clientX, y: e.clientY });
-        } else {
-          setAskPopup(null);
-        }
-      }, 0);
-    };
-
-    document.addEventListener("mousedown", onDown);
-    document.addEventListener("mouseup", onUp);
-    return () => {
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("mouseup", onUp);
-    };
-  }, [captureActiveSelection]);
-
-  const onAskFromSelection = useCallback(() => {
-    askFromSelection();
-    setAskPopup(null);
-  }, [askFromSelection]);
-
   const openNewTab = useCallback(() => {
     newTab(inheritedCwdForNewTab());
   }, [newTab, inheritedCwdForNewTab]);
@@ -1109,8 +1039,6 @@ export default function App() {
       splitActivePaneInActiveTab,
       focusNextPaneInTab,
       toggleSourceControl,
-      togglePanelAndFocus,
-      askFromSelection,
       toggleSidebar,
       toggleExplorerFocus,
       zoomIn,
@@ -1284,8 +1212,6 @@ export default function App() {
         focusSearch: () => searchInlineRef.current?.focus(),
         focusExplorerSearch: () => explorerRef.current?.focusSearch(),
         toggleSidebar,
-        toggleAi: togglePanelAndFocus,
-        askAiSelection: askFromSelection,
         openSettings: () => void openSettingsWindow(),
         openShortcuts: () => setShortcutsOpen(true),
       }),
@@ -1304,7 +1230,6 @@ export default function App() {
       focusNextPaneInTab,
       toggleSidebar,
       togglePanelAndFocus,
-      askFromSelection,
     ],
   );
 
@@ -1652,15 +1577,6 @@ export default function App() {
 
           <AnimatePresence>
             {miniOpen && hasComposer ? <AiMiniWindow key="ai-mini" /> : null}
-            {askPopup ? (
-              <SelectionAskAi
-                key="ask-ai-popup"
-                x={askPopup.x}
-                y={askPopup.y}
-                onAsk={onAskFromSelection}
-                onDismiss={() => setAskPopup(null)}
-              />
-            ) : null}
           </AnimatePresence>
 
           <CommandPalette
