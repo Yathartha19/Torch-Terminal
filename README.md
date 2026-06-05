@@ -20,7 +20,7 @@
 
 ---
 
-Torch is a personal fork of [Terax](https://github.com/crynta/terax-ai). Functionality and credit for the upstream design and code go to [@crynta](https://github.com/crynta). This fork changes branding, distribution, adds and removes features ( removes auto-updater and ai features, adds draggable tabs, UI and keybind changes ).
+Torch is a personal fork of [Terax](https://github.com/crynta/terax-ai). Functionality and credit for the upstream design and code go to [@crynta](https://github.com/crynta). This fork changes branding, distribution, adds and removes features ( removes auto-updater and ai features, adds draggable tabs, UI and keybind changes ). This fork is intended for personal use.
 
 If you want the official cross-platform builds (macOS Intel, Linux, Windows), get them from [crynta/terax-ai](https://github.com/crynta/terax-ai) — this fork is for personal use.
 
