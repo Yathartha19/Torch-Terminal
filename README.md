@@ -5,7 +5,6 @@
   <p><strong>Personal fork of <a href="https://github.com/crynta/terax-ai">Terax</a> — lightweight terminal-first dev workspace.</strong></p>
 
   <p>
-    <img src="https://img.shields.io/github/v/release/RiotBeard/termax?label=version&color=blue" alt="version" />
     <img src="https://img.shields.io/badge/license-Apache--2.0-green" alt="license" />
     <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey" alt="platform" />
   </p>
