@@ -1,6 +1,10 @@
 # Security
 
-Terax runs shells, reads/writes files, and talks to AI providers — so security bugs matter. If you find one, please tell us before posting it publicly.
+> **This is a personal fork.** Torch shares its security surface with upstream [Terax](https://github.com/crynta/terax-ai) — bugs in the codebase should go to upstream so all users benefit. Report fork-specific issues by opening a private GitHub security advisory on `Yathartha19/Torch-Terminal`.
+
+---
+
+Torch/Terax runs shells, reads/writes files, and talks to AI providers — so security bugs matter. If you find one, please tell us before posting it publicly.
 
 ## Reporting
 
