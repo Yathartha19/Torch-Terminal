@@ -6,11 +6,12 @@ licensed under the Apache License, Version 2.0.
 
 Modifications from upstream:
   - Renamed product from "Terax" to "Torch"
+  - Change product logo
   - Changed bundle identifier to com.tensei.torch
+  - Replaced user-facing branding strings
   - Removed auto-updater plugin and configuration
   - Removed AI features from UI such as Models/Agents selection, 'Ask Terax', Chat with Agent/AI, AI features related keybinds
-  - Replaced user-facing branding strings
-  - Change product logo
   - Added features Draggable/Movable Tabs, UI changes (removed traffic light buttons, zen mode paddings)
+  - Added Notes tabs with savable notes and keybind for notes tab
 
 The original Apache 2.0 LICENSE file is preserved unchanged.

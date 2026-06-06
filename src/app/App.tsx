@@ -42,6 +42,7 @@ import {
   NewEditorDialog,
   type EditorPaneHandle,
 } from "@/modules/editor";
+import { NotesStack } from "@/modules/notes";
 import {
   GitHistoryStack,
   type GitHistorySearchHandle,
@@ -209,6 +210,7 @@ export default function App() {
     closePaneByLeaf,
     resetWorkspace,
     reorderTabs,
+    newNotesTab,
   } = useTabs(getLaunchDir() ? { cwd: getLaunchDir() } : undefined);
 
   // Mirror `tabs` into a ref so callbacks scheduled with `setTimeout`
@@ -493,6 +495,7 @@ export default function App() {
   }, [hydrateSessions]);
 
   const activeTab = tabs.find((t) => t.id === activeId);
+  const isNotesTab = activeTab?.kind === "notes";
   const isTerminalTab = activeTab?.kind === "terminal";
   const isEditorTab = activeTab?.kind === "editor";
   const isPreviewTab = activeTab?.kind === "preview";
@@ -1004,6 +1007,7 @@ export default function App() {
       "tab.newPrivate": openNewPrivateTab,
       "tab.newPreview": () => openPreviewTab(""),
       "tab.newEditor": () => setNewEditorOpen(true),
+      "tab.newNotes": newNotesTab,
       "tab.close": handleCloseTabOrPane,
       "tab.next": () => cycleTab(1),
       "tab.prev": () => cycleTab(-1),
@@ -1374,6 +1378,15 @@ export default function App() {
       </div>
       <div
         className={cn(
+          "absolute inset-0",
+          !isNotesTab && "invisible pointer-events-none",
+        )}
+        aria-hidden={!isNotesTab}
+      >
+        <NotesStack tabId={activeId} />
+      </div>
+      <div
+        className={cn(
           "absolute inset-0 px-3 pt-2 pb-2",
           !isPreviewTab && "invisible pointer-events-none",
         )}
@@ -1464,6 +1477,7 @@ export default function App() {
             searchTarget={searchTarget}
             searchRef={searchInlineRef}
             onReorder={reorderTabs}
+            onNewNotes={newNotesTab}
             />
           )}
 

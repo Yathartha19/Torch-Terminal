@@ -57,6 +57,12 @@ export type MarkdownTab = {
   path: string;
 };
 
+export type NotesTab = {
+  id: number;
+  kind: "notes";
+  title: string;
+};
+
 export type AiDiffStatus = "pending" | "approved" | "rejected";
 
 export type AiDiffTab = {
@@ -110,7 +116,8 @@ export type Tab =
   | AiDiffTab
   | GitDiffTab
   | GitHistoryTab
-  | GitCommitFileDiffTab;
+  | GitCommitFileDiffTab
+  | NotesTab;
 
 export type TabPatch = Partial<{
   title: string;
@@ -215,6 +222,13 @@ export function useTabs(initial?: Partial<TerminalTab>) {
     ]);
     setActiveId(tabId);
     return tabId;
+  }, []);
+
+  const newNotesTab = useCallback(() => {
+    const id = nextIdRef.current++;
+    setTabs((t) => [...t, { id, kind: "notes", title: "Notes" }]);
+    setActiveId(id);
+    return id;
   }, []);
 
   /**
@@ -833,5 +847,6 @@ export function useTabs(initial?: Partial<TerminalTab>) {
     closePaneByLeaf,
     resetWorkspace,
     reorderTabs,
+    newNotesTab,
   };
 }

@@ -30,6 +30,7 @@ import {
   type SearchInlineHandle,
   type SearchTarget,
 } from "./SearchInline";
+import { NoteIcon } from "@hugeicons/core-free-icons";
 
 type Props = {
   tabs: Tab[];
@@ -55,6 +56,7 @@ type Props = {
   searchTarget: SearchTarget;
   searchRef: RefObject<SearchInlineHandle | null>;
   onReorder: (tabs: Tab[]) => void;
+  onNewNotes: () => void;
 };
 
 const COMPACT_WIDTH = 720;
@@ -80,6 +82,7 @@ export function Header({
   searchTarget,
   searchRef,
   onReorder,
+  onNewNotes,
 }: Props) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [compact, setCompact] = useState(false);
@@ -177,6 +180,10 @@ export function Header({
                 </span>
               )}
             </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => onNewNotes()}>
+              <HugeiconsIcon icon={NoteIcon} size={14} strokeWidth={1.75} />
+              <span className="flex-1">Notes</span>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -208,6 +215,7 @@ export function Header({
           onRename={onRename}
           compact={compact}
           onReorder={onReorder}
+          onNewNotes={onNewNotes}
         />
         <div data-tauri-drag-region className="h-full min-w-2 flex-1" />
       </div>

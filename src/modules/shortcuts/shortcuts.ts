@@ -10,6 +10,7 @@ export type ShortcutId =
   | "tab.newPrivate"
   | "tab.newPreview"
   | "tab.newEditor"
+  | "tab.newNotes"
   | "tab.close"
   | "tab.next"
   | "tab.prev"
@@ -100,6 +101,12 @@ export const SHORTCUTS: Shortcut[] = [
     label: "New editor tab",
     group: "Tabs",
     defaultBindings: [{ [MOD_PROP]: true, key: "e" }],
+  },
+  {
+    id: "tab.newNotes",
+    label: "New notes tab",
+    group: "Tabs",
+    defaultBindings: [{ [MOD_PROP]: true, key: "n" }],
   },
   {
     id: "tab.close",

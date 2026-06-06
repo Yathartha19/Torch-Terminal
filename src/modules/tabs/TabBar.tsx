@@ -31,6 +31,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect, useRef, useState } from "react";
 import { labelFor } from "./lib/tabLabel";
 import type { EditorTab, Tab } from "./lib/useTabs";
+import { NoteIcon } from "@hugeicons/core-free-icons";
 
 type Props = {
   tabs: Tab[];
@@ -46,6 +47,7 @@ type Props = {
   onRename: (id: number, title: string) => void;
   onReorder: (tabs: Tab[]) => void;
   compact?: boolean;
+  onNewNotes: () => void;
 };
 
 export function TabBar({
@@ -62,6 +64,7 @@ export function TabBar({
   onRename,
   onReorder,
   compact,
+  onNewNotes,
 }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -334,6 +337,10 @@ export function TabBar({
             <DropdownMenuItem onSelect={() => onNewGitGraph()}>
               <HugeiconsIcon icon={GitBranchIcon} size={14} strokeWidth={1.75} />
               <span className="flex-1">Git Graph</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => onNewNotes()}>
+              <HugeiconsIcon icon={NoteIcon} size={14} strokeWidth={1.75} />
+              <span className="flex-1">Notes</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
