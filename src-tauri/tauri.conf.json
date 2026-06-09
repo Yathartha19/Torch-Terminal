@@ -76,6 +76,7 @@
   },
   "plugins": {
     "updater": {
+      "active": false,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDNCQUJGRDhBQjYwRTM0NjkKUldScE5BNjJpdjJyT3dIN0dqbUpHaDA4QW1GaDVmTTllRXdZVk96dFNTRUZ3Y2hiVGszYjFqRloK",
       "endpoints": [
         "https://github.com/yathartha19/torch-terminal"

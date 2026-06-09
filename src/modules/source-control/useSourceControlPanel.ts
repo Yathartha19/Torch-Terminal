@@ -110,10 +110,10 @@ type SourceControlPanelState = {
   push: () => Promise<void>;
 };
 
-function normalizeError(error: unknown): string {
+function normalizeError(error: any): string {
   if (typeof error === "string") return error;
   if (error && typeof error === "object" && "message" in error) {
-    const message = (error as { message?: unknown }).message;
+    const message = (error as { message?: any }).message;
     if (typeof message === "string") return message;
   }
   return "Unknown source control error";
@@ -254,7 +254,7 @@ function optimisticStage(
   paths: Set<string>,
 ): GitStatusSnapshot {
   let changed = false;
-  const next = status.changedFiles.map((file) => {
+  const next = status.changedFiles.map((file: any) => {
     if (!paths.has(file.path)) return file;
     if (file.staged && !file.unstaged) return file;
     changed = true;
@@ -652,7 +652,7 @@ export function useSourceControlPanel(
       setActionError(null);
       setActionMessage(null);
       setSelectionTransition("none");
-      const file = status?.changedFiles.find((c) => c.path === entry.path);
+      const file = status?.changedFiles.find((c: any) => c.path === entry.path);
       openSelection(nextSelection, repo.repoRoot, file);
     },
     [openSelection, repo, selected, status],
@@ -757,7 +757,7 @@ export function useSourceControlPanel(
 
   const stageAllEntries = useCallback(async () => {
     if (!repo || unstagedEntries.length === 0) return;
-    const paths = new Set(unstagedEntries.map((entry) => entry.path));
+    const paths = new Set(unstagedEntries.map((entry: any) => entry.path));
     await runMutation(
       "stage:all",
       (s) => optimisticStage(s, paths),
@@ -768,7 +768,7 @@ export function useSourceControlPanel(
 
   const unstageAllEntries = useCallback(async () => {
     if (!repo || stagedEntries.length === 0) return;
-    const paths = new Set(stagedEntries.map((entry) => entry.path));
+    const paths = new Set(stagedEntries.map((entry: any) => entry.path));
     await runMutation(
       "unstage:all",
       (s) => optimisticUnstage(s, paths),
@@ -792,7 +792,7 @@ export function useSourceControlPanel(
       setActionError(null);
       setActionMessage(null);
       setSelectionTransition("none");
-      const file = status?.changedFiles.find((c) => c.path === entry.path);
+      const file = status?.changedFiles.find((c: any) => c.path === entry.path);
       openSelection(nextSelection, repo.repoRoot, file);
     },
     [openSelection, repo, selected, status],

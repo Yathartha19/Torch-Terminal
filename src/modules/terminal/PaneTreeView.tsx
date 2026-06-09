@@ -79,6 +79,7 @@ export function PaneTreeView({
               activeLeafId={activeLeafId}
               onFocusLeaf={onFocusLeaf}
               getBundle={getBundle}
+              zenMode={zenMode}
             />
           </ResizablePanel>
         </Fragment>

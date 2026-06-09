@@ -30,7 +30,7 @@ async function ensureNotesDir(dir: string): Promise<void> {
 
 async function listNotes(dir: string): Promise<Note[]> {
   try {
-    const entries = await invoke<{ name: string; path: string; kind: string }[]>(
+    const entries = await invoke<{ name: string; kind: string }[]>(
       "fs_read_dir",
       { path: dir, showHidden: false, workspace: null }
     );
@@ -38,10 +38,11 @@ async function listNotes(dir: string): Promise<Note[]> {
       .filter((e) => e.kind === "file" && e.name.endsWith(".md"))
       .map((e) => ({
         name: e.name.replace(/\.md$/, ""),
-        path: e.path,
+        path: `${dir}/${e.name}`,  // ← construct path manually
       }))
       .sort((a, b) => a.name.localeCompare(b.name));
-  } catch {
+  } catch (e) {
+    console.error("listNotes error:", e);
     return [];
   }
 }
@@ -66,7 +67,7 @@ async function deleteNote(path: string): Promise<void> {
   await invoke("fs_delete", { path, workspace: null });
 }
 
-export function NotesStack({ tabId }: Props) {
+export function NotesStack() {
   const [notesDir, setNotesDir] = useState<string | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const [activeNote, setActiveNote] = useState<Note | null>(null);
@@ -118,6 +119,8 @@ export function NotesStack({ tabId }: Props) {
   }, [notesDir]);
 
   const handleDeleteNote = useCallback(async (note: Note) => {
+  console.log("deleting note path:", note.path);
+  try {
     await deleteNote(note.path);
     setNotes((prev) => {
       const next = prev.filter((n) => n.path !== note.path);
@@ -126,7 +129,10 @@ export function NotesStack({ tabId }: Props) {
       }
       return next;
     });
-  }, [activeNote]);
+  } catch (e) {
+    console.error("delete failed:", e);
+  }
+}, [activeNote]);
 
   const handleRenameNote = useCallback(async (note: Note, newName: string) => {
     if (!notesDir || !newName.trim() || newName === note.name) return;

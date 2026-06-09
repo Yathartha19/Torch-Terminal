@@ -461,8 +461,7 @@ export default function App() {
       });
       if (!prefsHydrated) return;
       void getAllCustomEndpointKeys(
-        usePreferencesStore.getState().customEndpoints,
-      ).then((epKeys) => {
+        ).then((epKeys) => {
         if (!alive) return;
         setCustomEndpointKeys(epKeys);
       });
@@ -735,19 +734,6 @@ export default function App() {
     [tabs, activeId, setActiveId],
   );
 
-  const captureActiveSelection = useCallback((): string | null => {
-    const t = tabs.find((x) => x.id === activeId);
-    if (!t) return null;
-    if (t.kind === "terminal") {
-      const lid = t.activeLeafId;
-      return terminalRefs.current.get(lid)?.getSelection() ?? null;
-    }
-    if (t.kind === "editor") {
-      return editorRefs.current.get(activeId)?.getSelection() ?? null;
-    }
-    return null;
-  }, [tabs, activeId]);
-
   const togglePanelAndFocus = useCallback(() => {
     if (!hasComposer) {
       void openSettingsWindow("models");
@@ -760,8 +746,6 @@ export default function App() {
       focusInput(null);
     }
   }, [hasComposer, panelOpen, openPanel, focusInput]);
-
-  const attachSelection = useChatStore((s) => s.attachSelection);
 
   const handleAttachFileToAgent = useCallback(
     (path: string) => {
@@ -1267,7 +1251,7 @@ export default function App() {
         const t = tabs.find((x) => x.id === activeId);
         return t?.kind === "terminal" && t.private === true;
       },
-      injectIntoActivePty: (text) => {
+      injectIntoActivePty: (text: string) => {
         const t = tabs.find((x) => x.id === activeId);
         if (t?.kind !== "terminal") return false;
         const term = terminalRefs.current.get(t.activeLeafId);
@@ -1383,7 +1367,7 @@ export default function App() {
         )}
         aria-hidden={!isNotesTab}
       >
-        <NotesStack tabId={activeId} />
+        <NotesStack />
       </div>
       <div
         className={cn(

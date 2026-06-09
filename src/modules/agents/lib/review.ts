@@ -28,7 +28,7 @@ function fireReview(m: ManagedAgent): void {
   const store = useManagedAgentsStore.getState();
   store.markReviewed(m.leafId);
   store.setPhase(m.leafId, "reviewing");
-  const chat = getOrCreateChat(m.sessionId);
+  const chat = getOrCreateChat();
   void chat.sendMessage({
     role: "user",
     parts: [{ type: "text", text: buildReviewDirective(m) }],

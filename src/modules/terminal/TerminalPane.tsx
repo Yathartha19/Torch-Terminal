@@ -50,7 +50,6 @@ export const TerminalPane = forwardRef<TerminalPaneHandle, Props>(
       onSearchReady: (a) => onSearchReady?.(leafId, a),
       onExit: (c) => onExit?.(leafId, c),
       onCwd: (c) => onCwd?.(leafId, c),
-      zenMode,
     });
 
     useEffect(() => {

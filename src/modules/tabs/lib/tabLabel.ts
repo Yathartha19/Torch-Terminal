@@ -7,6 +7,7 @@ import type { Tab } from "./useTabs";
  * testable without rendering the bar.
  */
 export function labelFor(t: Tab): string {
+  if (t.kind === "notes") return t.title;
   if (t.kind === "editor") return t.title;
   if (t.kind === "preview") return t.title;
   if (t.kind === "markdown") return t.title;
