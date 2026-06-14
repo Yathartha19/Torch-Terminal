@@ -1,7 +1,8 @@
 pub mod modules;
 
+#[cfg(target_os = "macos")]
 use cocoa::base::nil;
-use modules::{agent, fs, git, net, pty, secrets, shell, workspace};
+use modules::{fs, git, net, pty, secrets, shell, workspace};
 use std::sync::Mutex;
 use tauri::{Emitter, Manager, State, WebviewUrl, WebviewWindowBuilder};
 #[cfg(target_os = "macos")]
@@ -137,9 +138,10 @@ pub fn run() {
                 .build(),
         )
         .plugin(tauri_plugin_opener::init())
-        .setup(|app| {
-            let win = app.get_webview_window("main").unwrap();
-        
+        .setup(|_app| {
+            #[cfg(target_os = "macos")]
+            let win = _app.get_webview_window("main").unwrap();
+
             #[cfg(target_os = "macos")]
             {
                 use cocoa::appkit::{NSWindow, NSWindowStyleMask};
@@ -250,8 +252,6 @@ pub fn run() {
             workspace::workspace_current_dir,
             get_launch_dir,
             open_settings_window,
-            agent::agent_enable_claude_hooks,
-            agent::agent_claude_hooks_status,
             secrets::secrets_get,
             secrets::secrets_set,
             secrets::secrets_delete,
